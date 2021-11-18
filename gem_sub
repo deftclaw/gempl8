@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+
+GEM_NAME = ARGV[0]
+
+gemspec = Dir.children("#{GEM_NAME}").select{|d| d =~ /^.+\.gemspec$/}
+file = Pathname.new("#{GEM_NAME}/#{gemspec.first}")
+
+file.rename("#{file.dirname}/#{GEM_NAME}.gemspec")
+contents = File.readlines(file.to_s)
+
+File.delete(file.to_s)
+puts contents[2]
+puts contents[2].gsub('GEM_NAME', "#{GEM_NAME}")
+
+contents.each do |l|
+  l = l.gsub('GEM_NAME', "#{GEM_NAME}")
+
+  File.write(file.to_s, l, mode: 'a')
+end
+

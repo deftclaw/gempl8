@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+def classify_children(target)
+  require 'pathname'
+  require 'active_support/core_ext/hash'
+
+  tree = {
+    "dirs" => [],
+    "leaves" => []
+  }.with_indifferent_access
+
+  Dir.children(target).each do |c|
+    t = Pathname.new("#{target}/#{c}")
+    
+    t.directory? ? tree[:dirs].push(t) : tree[:leaves].push(t)
+  end
+    return tree
+    
+end
